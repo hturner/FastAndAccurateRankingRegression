@@ -3,7 +3,7 @@ from __future__ import division
 from time import time
 import numpy as np
 import statsmodels.base.model
-from scipy.misc import logsumexp
+from scipy.special import logsumexp # HT: logsumexp moved to scipy.special, scipy >= '1.0.0'
 from utils import *
 
 def ilsr(n, rankings, weights=None):

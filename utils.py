@@ -55,16 +55,17 @@ def init_beta_b_convex_QP(X, rankings, mat_Pij):
     :return: beta, b, time
     '''
     p = X.shape[1]
-    # Define variables
-    beta = cp.Variable(p)
-    b = cp.Variable(1)
+    # Define variables (HT: added second dimension to get vstack to work)
+    beta = cp.Variable((p, 1))
+    b = cp.Variable((1, 1))
     params = cp.vstack([beta, b])
     # Define objective
     Q = est_sum_dij_dijT(X, rankings, mat_Pij)
     objective = cp.quad_form(params, Q)
-    # Define constraints
-    constraints = [X * beta + b >= rtol,
-                   cp.sum_entries(X * beta + b) == 1]
+    # Define constraints (HT: use `@` for matrix-vector multiplication; 
+    # sum_entries -> sum in cvxpy > 1.0)
+    constraints = [X @ beta + b >= rtol,
+                   cp.sum(X @ beta + b) == 1]
     start_beta_b = time()
     # Optimize
     prob = cp.Problem(cp.Minimize(objective), constraints=constraints)
