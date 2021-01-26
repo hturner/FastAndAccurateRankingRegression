@@ -72,7 +72,7 @@ def init_beta_b_convex_QP(X, rankings, mat_Pij):
     prob.solve(solver='SCS')
     time_beta_b_init = time() - start_beta_b
     if beta.value is None:
-        constraints = [X * beta + b >= rtol]
+        constraints = [X @ beta + b >= rtol]
         # If cannot be solved, reduce the accuracy requirement
         start_beta_b = time()
         # Optimize
@@ -80,7 +80,7 @@ def init_beta_b_convex_QP(X, rankings, mat_Pij):
         prob.solve(solver='SCS', eps=1e-2)
         time_beta_b_init = time() - start_beta_b
     return np.squeeze(np.array(beta.value)), b.value, time_beta_b_init
-
+    
 def est_Pij(n, rankings):
     '''
     n: number of items

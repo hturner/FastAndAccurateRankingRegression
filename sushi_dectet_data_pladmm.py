@@ -30,6 +30,7 @@ log_dict['log_admm_conv'] = False
 log_dict['beta_log_admm'] = np.copy(exp_beta_init)
 log_dict['pi_log_admm'] = softmax(np.dot(X, log_dict['beta_log_admm']))
 log_dict['u_log_admm'] = np.copy(u_init)
+log_dict['time_log_admm'] = [time_exp_beta_init + time_u_init]
 log_dict['diff_pi_log_admm'] = [np.linalg.norm(log_dict['pi_log_admm'])]
 log_dict['diff_beta_log_admm'] = [np.linalg.norm(log_dict['beta_log_admm'])]
 log_dict['prim_feas_log_admm'] = [np.linalg.norm(np.dot(X, log_dict['beta_log_admm']) - np.log(log_dict['pi_log_admm'] + epsilon))]

@@ -103,8 +103,8 @@ class ADMM_log(object):
         objective = cp.square(cp.norm(weights - weights_prev))
         # Define constraints
         constraints = [weights >= rtol,
-                       cp.sum_entries(weights) == 1,
-                       weights.T * sigmas == 0]
+                       cp.sum(weights) == 1, # HT: renamed sum in cvxpy 1.0
+                       weights.T @ sigmas == 0] # HT: use `@` for matrix-vector multiplication
         # Optimize
         prob = cp.Problem(cp.Minimize(objective), constraints=constraints)
         prob.solve(solver='SCS')
