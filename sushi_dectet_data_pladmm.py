@@ -56,6 +56,7 @@ for iter in range(n_iter):
                 log_dict['log_admm'].fit_log(rho, weights=log_dict['pi_log_admm'], beta=log_dict['beta_log_admm'], u=log_dict['u_log_admm'])
         # scores predicted by beta
         log_dict['tilde_pi_log_admm'] = softmax(np.dot(X, log_dict['beta_log_admm']))
+        log_dict['time_log_admm'].append(time_log_admm_iter)
         log_dict['diff_pi_log_admm'].append(np.linalg.norm(log_dict['pi_log_admm_prev'] - log_dict['pi_log_admm']))
         log_dict['diff_beta_log_admm'].append(np.linalg.norm(log_dict['beta_log_admm_prev'] - log_dict['beta_log_admm']))
         log_dict['prim_feas_log_admm'].append(np.linalg.norm(np.dot(X, log_dict['beta_log_admm']) - np.log(log_dict['pi_log_admm'] + epsilon)))
@@ -69,6 +70,9 @@ for iter in range(n_iter):
      # stop if converged
     if log_dict['log_admm_conv']:
         break
+        
+# Correct time scale
+log_dict['time_cont_log_admm'] = [sum(log_dict['time_log_admm'][:ind + 1]) for ind in range(len(log_dict['time_log_admm']))]
 
 # Save results as a csv file
 save_name = 'pladmm'
